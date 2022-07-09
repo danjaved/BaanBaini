@@ -64,10 +64,16 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         String userName = ((User) authResult.getPrincipal()).getUsername();
-        String token = Jwts.builder().setSubject(userName)
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret()).compact();
+        String token =null;
 
+        try{
+            token = Jwts.builder().setSubject(userName)
+                    .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
+                    .signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret()).compact();
+        }
+        catch(Exception e){
+           e.printStackTrace();
+        }
         Object userLoginServiceObject=SpringApplicationContext.getBean("userLoginServiceImplementation");
         UserLoginService userService = (UserLoginService) userLoginServiceObject;
         UserDto userDto=userService.getUserByEmailId(userName);
