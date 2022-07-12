@@ -29,13 +29,12 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         UsernamePasswordAuthenticationToken authenticationToken=getAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request,response);
-        super.doFilterInternal(request, response, chain);
     }
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
         token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
         if (token != null) {
-            String user = Jwts.parser().setSigningKey(SecurityConstants.getTokenSecret()).parseClaimsJws(token).getBody()
+            String user=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
                     .getSubject();
             if (user != null) {
                 return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
