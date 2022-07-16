@@ -1,6 +1,5 @@
 package com.baanBaini.BaanBaini.configuration.security;
 
-import com.baanBaini.BaanBaini.SpringApplicationContext;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +30,7 @@ public class SecurityConfiguration {
         authenticationManagerBuilder.userDetailsService(userLoginService).passwordEncoder(bCryptPasswordEncoder);
         AuthenticationManager authenticationManager=authenticationManagerBuilder.build();
 
-        http.csrf().disable().authorizeRequests()
+        http.csrf().disable().authorizeHttpRequests()
                 .antMatchers("/**/login").permitAll()
                 .antMatchers("/**/signup").permitAll()
                 .antMatchers("/home/**").permitAll()
@@ -51,4 +48,5 @@ public class SecurityConfiguration {
         filter.setFilterProcessesUrl("/user/login");
         return filter;
     }
+
 }

@@ -4,7 +4,6 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -25,6 +24,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         String header=request.getHeader(SecurityConstants.HEADER_STRING);
         if(header==null || ! header.startsWith(SecurityConstants.TOKEN_PREFIX)){
             chain.doFilter(request,response);
+            return;
         }
         UsernamePasswordAuthenticationToken authenticationToken=getAuthentication(request);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
@@ -32,16 +32,20 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     }
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
-        token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
-        if (token != null) {
-            String user=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
-                    .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+
+        try{
+            if (token != null) {
+                token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
+                String user=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
+                        .getSubject();
+                if (user != null) {
+                    return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                }
             }
-            return null;
+        }catch (Exception e){
+
         }
-        return null;
+        return new UsernamePasswordAuthenticationToken("","",new ArrayList<>());
     }
 }
 

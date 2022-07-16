@@ -1,10 +1,12 @@
 package com.baanBaini.BaanBaini.user.model.responseModel;
 
+import java.util.Date;
+
 public class UserSignUpResponseModel {
     private String publicUserId;
     private String name;
     private String email;
-    private String password;
+    private Date joiningDate;
 
     public String getPublicUserId() {
         return publicUserId;
@@ -30,11 +32,11 @@ public class UserSignUpResponseModel {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public Date getJoiningDate() {
+        return joiningDate;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setJoiningDate(Date joiningDate) {
+        this.joiningDate = joiningDate;
     }
 }
