@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                 .antMatchers("/**/login").permitAll()
                 .antMatchers("/**/signup").permitAll()
                 .antMatchers("/home/**").permitAll()
+                .antMatchers("/user/**").hasAuthority("ROLE_User")
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .addFilter(new AuthorizationFilter(authenticationManager))

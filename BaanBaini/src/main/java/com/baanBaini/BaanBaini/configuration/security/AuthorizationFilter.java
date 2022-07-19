@@ -1,6 +1,10 @@
 package com.baanBaini.BaanBaini.configuration.security;
 
+import com.baanBaini.BaanBaini.SpringApplicationContext;
+import com.baanBaini.BaanBaini.user.model.dto.UserDto;
+import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class AuthorizationFilter extends BasicAuthenticationFilter {
+
     public AuthorizationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -31,15 +36,19 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request,response);
     }
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+
+        UserLoginService userLoginService = (UserLoginService)SpringApplicationContext.getBean("userLoginServiceImplementation");
+
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
 
         try{
             if (token != null) {
                 token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
-                String user=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
+                String publicUserId=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
                         .getSubject();
-                if (user != null) {
-                    return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                UserDto userDto=userLoginService.getUserByPublicId(publicUserId);
+                if (publicUserId != null && userDto!=null) {
+                    return new UsernamePasswordAuthenticationToken(publicUserId, userDto.getPassword(), userDto.getAuthorities());
                 }
             }
         }catch (Exception e){

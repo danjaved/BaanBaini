@@ -3,7 +3,7 @@ package com.baanBaini.BaanBaini.user.serviceImplementation;
 import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
 import com.baanBaini.BaanBaini.shared.utility.Utility;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
-import com.baanBaini.BaanBaini.user.model.entity.UserEntity;
+import com.baanBaini.BaanBaini.user.model.entity.UserEntity2;
 import com.baanBaini.BaanBaini.user.repository.UserRepository;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +29,12 @@ public class UserLoginServiceImplementation implements UserLoginService {
     @Override
     public UserDto addUser(UserDto user) {
         user.setPublicUserId(utility.getRandomString(12));
-        UserEntity userEntity= mapperUtility.mapModel(user,UserEntity.class);
-        userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        UserEntity2 userEntity= mapperUtility.mapModel(user,UserEntity2.class);
+        userEntity.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        userEntity.setAccountEnabled(true);
+        ArrayList<String> auths=new ArrayList<>();
+        auths.add("ROLE_User");
+        userEntity.setAuthorities(auths);
         userEntity=this.userRepository.save(userEntity);
         user = mapperUtility.mapModel(userEntity, UserDto.class);
         return user;
@@ -41,10 +45,23 @@ public class UserLoginServiceImplementation implements UserLoginService {
         return mapperUtility.mapModel(userRepository.findByEmail(emailId),UserDto.class);
     }
 
+
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity= userRepository.findByEmail(username);
-        User user = new User(userEntity.getEmail(),userEntity.getEncryptedPassword(), new ArrayList<>());
-        return user;
+    public UserDto getUserByPublicId(String userId) {
+        return mapperUtility.mapModel(userRepository.findByPublicUserId(userId),UserDto.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String emailId) throws UsernameNotFoundException {
+        try
+        {
+            UserEntity2 userEntity= userRepository.findByEmail(emailId);
+            User user = new User(userEntity.getPublicUserId(),userEntity.getPassword(), new ArrayList<>());
+            return user;
+        }
+        catch (Exception e){
+            return null;
+        }
+
     }
 }

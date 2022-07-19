@@ -2,7 +2,10 @@ package com.baanBaini.BaanBaini.user.model.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Document(collection = "users")
@@ -15,6 +18,7 @@ public class UserEntity {
     private String name;
     private String email;
     private String encryptedPassword;
+    private String authority;
 
     public UserEntity() {
     }
@@ -75,4 +79,6 @@ public class UserEntity {
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
     }
+
+
 }
