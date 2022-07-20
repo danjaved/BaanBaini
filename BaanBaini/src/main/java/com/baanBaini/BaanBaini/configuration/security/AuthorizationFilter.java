@@ -4,7 +4,7 @@ import com.baanBaini.BaanBaini.SpringApplicationContext;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,9 +1,8 @@
 package com.baanBaini.BaanBaini.user.service;
 
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserLoginService extends UserDetailsService {
+public interface UserLoginService  {
     UserDto addUser(UserDto user);
     UserDto getUserByEmailId(String emailId);
 

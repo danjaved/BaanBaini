@@ -1,5 +1,7 @@
 package com.baanBaini.BaanBaini.configuration.security;
 
+import com.baanBaini.BaanBaini.configuration.security.service.LoginService;
+import com.baanBaini.BaanBaini.shared.urls.ControllerPaths;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,12 +16,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-    private final UserLoginService userLoginService;
+    private final LoginService loginService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public SecurityConfiguration(UserLoginService userLoginService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userLoginService = userLoginService;
+    public SecurityConfiguration(LoginService loginService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.loginService = loginService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -27,14 +29,14 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         AuthenticationManagerBuilder authenticationManagerBuilder=http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userLoginService).passwordEncoder(bCryptPasswordEncoder);
+        authenticationManagerBuilder.userDetailsService(loginService).passwordEncoder(bCryptPasswordEncoder);
         AuthenticationManager authenticationManager=authenticationManagerBuilder.build();
 
         http.csrf().disable().authorizeHttpRequests()
                 .antMatchers("/**/login").permitAll()
                 .antMatchers("/**/signup").permitAll()
-                .antMatchers("/home/**").permitAll()
-                .antMatchers("/user/**").hasAuthority("ROLE_User")
+                .antMatchers(ControllerPaths.HOME_BASE_PATH+"/**").permitAll()
+                .antMatchers(ControllerPaths.USER_BASE_URL+"/**").hasAuthority("ROLE_User")
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .addFilter(new AuthorizationFilter(authenticationManager))
@@ -46,7 +48,7 @@ public class SecurityConfiguration {
 
     public AuthenticationFilter getAuthenticationFilter(AuthenticationManager authenticationManager) throws Exception {
         final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager);
-        filter.setFilterProcessesUrl("/user/login");
+        filter.setFilterProcessesUrl("/login");
         return filter;
     }
 
