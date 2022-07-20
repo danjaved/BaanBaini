@@ -8,9 +8,8 @@ import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -22,14 +21,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
-
 
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -42,15 +39,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         UserLogInRequestModel cred;
         try {
-            cred = new ObjectMapper().readValue(request.getInputStream(),
-                    UserLogInRequestModel.class);
+            cred = new ObjectMapper().readValue(request.getInputStream(), UserLogInRequestModel.class);
 
-            return authenticationManager.authenticate( new
-                    UsernamePasswordAuthenticationToken(cred.getEmail(), cred.getPassword(), new
-                    ArrayList<>()));
+            return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(), cred.getPassword(), new ArrayList<>()));
 
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new BadCredentialsException("Invalid Credentials");
         }
         //return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(), cred.getPassword(), new ArrayList<>()));
     }
@@ -61,26 +55,26 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 //        ErrorResponseMessage error=new ErrorResponseMessage(new Date(), "Invalid Credentials");
 //        super.unsuccessfulAuthentication(request, response, failed);
 //        throw new InvalidCredentialsException("Invalid Credentials");
-        super.unsuccessfulAuthentication(request,response,failed);
+        super.unsuccessfulAuthentication(request, response, failed);
 
     }
+
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
         String userName = ((User) authResult.getPrincipal()).getUsername();
-        String token =null;
-        Key key= SecurityConstants.getTokenSecret();
-        try{
+        String token = null;
+        Key key = SecurityConstants.getTokenSecret();
+        try {
             token = Jwts.builder().setSubject(userName)
                     .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                    .signWith(key,SignatureAlgorithm.HS512).compact();
+                    .signWith(key, SignatureAlgorithm.HS512).compact();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch(Exception e){
-           e.printStackTrace();
-        }
-        Object userLoginServiceObject=SpringApplicationContext.getBean("userLoginServiceImplementation");
+        Object userLoginServiceObject = SpringApplicationContext.getBean("userLoginServiceImplementation");
         UserLoginService userService = (UserLoginService) userLoginServiceObject;
-        UserDto userDto=userService.getUserByEmailId(userName);
+        UserDto userDto = userService.getUserByPublicId(userName);
         String userId = userDto.getPublicUserId();
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         response.addHeader("UserId", userId);

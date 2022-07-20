@@ -1,56 +1,65 @@
 package com.baanBaini.BaanBaini.user.model.entity;
 
-import org.springframework.data.annotation.Id;
+import com.baanBaini.BaanBaini.configuration.security.Authority;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-
+import java.util.List;
 @Document(collection = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
 
-    @Id
-    private String id;
-    private String publicUserId;
-    private Date joiningDate;
+    //private String username;
+    private String password;
+    private List<String> authorities;
+    private boolean isAccountExpired;
+    private boolean isAccountLocked;
+    private boolean isCredentialsExpired;
+    private boolean isAccountEnabled;
     private String name;
     private String email;
-    private String encryptedPassword;
+    private Date joiningDate;
+    private String publicUserId;
 
-    public UserEntity() {
+    @Override
+    public Collection<Authority> getAuthorities() {
+        List<Authority> authorityList = new ArrayList<>();
+        authorities.forEach(auth -> authorityList.add(new Authority(auth)));
+        return authorityList;
     }
 
-    public UserEntity(String id, String publicUserId, Date joiningDate, String name, String email, String encryptedPassword) {
-        this.id = id;
-        this.publicUserId = publicUserId;
-        this.joiningDate = joiningDate;
-        this.name = name;
-        this.email = email;
-        this.encryptedPassword = encryptedPassword;
+    @Override
+    public String getPassword() {
+        return password;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPublicUserId() {
+    @Override
+    public String getUsername() {
         return publicUserId;
     }
 
-    public void setPublicUserId(String publicUserId) {
-        this.publicUserId = publicUserId;
+    @Override
+    public boolean isAccountNonExpired() {
+        return !isAccountExpired;
     }
 
-    public Date getJoiningDate() {
-        return joiningDate;
+    @Override
+    public boolean isAccountNonLocked() {
+        return !isAccountLocked;
     }
 
-    public void setJoiningDate(Date joiningDate) {
-        this.joiningDate = joiningDate;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return !isCredentialsExpired;
     }
+
+    @Override
+    public boolean isEnabled() {
+        return isAccountEnabled;
+    }
+
 
     public String getName() {
         return name;
@@ -68,11 +77,59 @@ public class UserEntity {
         this.email = email;
     }
 
-    public String getEncryptedPassword() {
-        return encryptedPassword;
+    public Date getJoiningDate() {
+        return joiningDate;
     }
 
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+    public void setJoiningDate(Date joiningDate) {
+        this.joiningDate = joiningDate;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setAuthorities(ArrayList<String> authorities) {
+        this.authorities = authorities;
+    }
+
+    public boolean isAccountExpired() {
+        return isAccountExpired;
+    }
+
+    public void setAccountExpired(boolean accountExpired) {
+        isAccountExpired = accountExpired;
+    }
+
+    public boolean isAccountLocked() {
+        return isAccountLocked;
+    }
+
+    public void setAccountLocked(boolean accountLocked) {
+        isAccountLocked = accountLocked;
+    }
+
+    public boolean isCredentialsExpired() {
+        return isCredentialsExpired;
+    }
+
+    public void setCredentialsExpired(boolean credentialsExpired) {
+        isCredentialsExpired = credentialsExpired;
+    }
+
+    public boolean isAccountEnabled() {
+        return isAccountEnabled;
+    }
+
+    public void setAccountEnabled(boolean accountEnabled) {
+        isAccountEnabled = accountEnabled;
+    }
+
+    public String getPublicUserId() {
+        return publicUserId;
+    }
+
+    public void setPublicUserId(String publicUserId) {
+        this.publicUserId = publicUserId;
     }
 }
