@@ -1,0 +1,48 @@
+package com.baanBaini.BaanBaini.admin.serviceImplementation;
+
+import com.baanBaini.BaanBaini.admin.model.dto.AdminDTO;
+import com.baanBaini.BaanBaini.admin.model.entity.AdminEntity;
+import com.baanBaini.BaanBaini.admin.repository.AdminRepository;
+import com.baanBaini.BaanBaini.admin.service.AdminLoginService;
+import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
+import com.baanBaini.BaanBaini.shared.utility.Utility;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AdminLoginServiceImplementation implements AdminLoginService {
+    @Autowired
+    AdminRepository adminRepository;
+
+    @Autowired
+    MapperUtility mapperUtility;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    Utility utility;
+
+    @Override
+    public AdminDTO addAdmin(AdminDTO adminDTO) {
+        AdminEntity adminEntity=mapperUtility.mapModel(adminDTO,AdminEntity.class);
+        adminEntity.setPassword(bCryptPasswordEncoder.encode(adminDTO.getPassword()));
+        adminEntity.setPublicAdminId(utility.getRandomString(12));
+        adminEntity.setAccountEnabled(true);
+        adminEntity=adminRepository.save(adminEntity);
+        return  mapperUtility.mapModel(adminEntity,AdminDTO.class);
+    }
+
+    @Override
+    public AdminDTO getAdminByEmail(String email) {
+        AdminEntity admin=adminRepository.findByEmail(email);
+        return  mapperUtility.mapModel(admin,AdminDTO.class);
+    }
+
+    @Override
+    public AdminDTO getAdminByPublicUserId(String publicUserId) {
+        AdminEntity admin=adminRepository.findByPublicAdminId(publicUserId);
+        return  mapperUtility.mapModel(admin,AdminDTO.class);
+    }
+}
