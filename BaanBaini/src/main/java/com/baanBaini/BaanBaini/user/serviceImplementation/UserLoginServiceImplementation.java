@@ -26,26 +26,33 @@ public class UserLoginServiceImplementation implements UserLoginService {
     @Override
     public UserDto addUser(UserDto user) {
         user.setPublicUserId(utility.getRandomString(12));
-        UserEntity userEntity= mapperUtility.mapModel(user, UserEntity.class);
+        UserEntity userEntity = mapperUtility.mapModel(user, UserEntity.class);
         userEntity.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setAccountEnabled(true);
-        ArrayList<String> auths=new ArrayList<>();
+        ArrayList<String> auths = new ArrayList<>();
         auths.add("ROLE_User");
         userEntity.setAuthorities(auths);
-        userEntity=this.userRepository.save(userEntity);
+        userEntity = this.userRepository.save(userEntity);
         user = mapperUtility.mapModel(userEntity, UserDto.class);
         return user;
     }
 
     @Override
     public UserDto getUserByEmailId(String emailId) {
-        return mapperUtility.mapModel(userRepository.findByEmail(emailId),UserDto.class);
+        UserEntity user = userRepository.findByEmail(emailId);
+        if (user != null)
+            return mapperUtility.mapModel(user, UserDto.class);
+        else
+            return null;
     }
 
 
     @Override
     public UserDto getUserByPublicId(String userId) {
-        return mapperUtility.mapModel(userRepository.findByPublicUserId(userId),UserDto.class);
+        UserEntity user = userRepository.findByPublicUserId(userId);
+        if (user != null)
+            return mapperUtility.mapModel(user, UserDto.class);
+        return null;
     }
 
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 public class AdminLoginServiceImplementation implements AdminLoginService {
     @Autowired
@@ -26,23 +28,32 @@ public class AdminLoginServiceImplementation implements AdminLoginService {
 
     @Override
     public AdminDTO addAdmin(AdminDTO adminDTO) {
-        AdminEntity adminEntity=mapperUtility.mapModel(adminDTO,AdminEntity.class);
+        AdminEntity adminEntity = mapperUtility.mapModel(adminDTO, AdminEntity.class);
         adminEntity.setPassword(bCryptPasswordEncoder.encode(adminDTO.getPassword()));
         adminEntity.setPublicAdminId(utility.getRandomString(12));
         adminEntity.setAccountEnabled(true);
-        adminEntity=adminRepository.save(adminEntity);
-        return  mapperUtility.mapModel(adminEntity,AdminDTO.class);
+        ArrayList<String> auths = new ArrayList<>();
+        auths.add("ROLE_Admin");
+        adminEntity.setAuthorities(auths);
+        adminEntity = adminRepository.save(adminEntity);
+        return mapperUtility.mapModel(adminEntity, AdminDTO.class);
     }
 
     @Override
     public AdminDTO getAdminByEmail(String email) {
-        AdminEntity admin=adminRepository.findByEmail(email);
-        return  mapperUtility.mapModel(admin,AdminDTO.class);
+        AdminEntity admin = adminRepository.findByEmail(email);
+        if (admin != null)
+            return mapperUtility.mapModel(admin, AdminDTO.class);
+        else
+            return null;
     }
 
     @Override
     public AdminDTO getAdminByPublicUserId(String publicUserId) {
-        AdminEntity admin=adminRepository.findByPublicAdminId(publicUserId);
-        return  mapperUtility.mapModel(admin,AdminDTO.class);
+        AdminEntity admin = adminRepository.findByPublicAdminId(publicUserId);
+        if (admin != null)
+            return mapperUtility.mapModel(admin, AdminDTO.class);
+        else
+            return null;
     }
 }

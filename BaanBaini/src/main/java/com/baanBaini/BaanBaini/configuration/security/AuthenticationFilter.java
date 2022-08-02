@@ -2,6 +2,7 @@ package com.baanBaini.BaanBaini.configuration.security;
 
 
 import com.baanBaini.BaanBaini.SpringApplicationContext;
+import com.baanBaini.BaanBaini.configuration.security.service.LoginService;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
 import com.baanBaini.BaanBaini.user.model.requestModel.UserLogInRequestModel;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -36,17 +38,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-
         UserLogInRequestModel cred;
         try {
             cred = new ObjectMapper().readValue(request.getInputStream(), UserLogInRequestModel.class);
-
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(), cred.getPassword(), new ArrayList<>()));
-
         } catch (Exception e) {
             throw new BadCredentialsException("Invalid Credentials");
         }
-        //return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(cred.getEmail(), cred.getPassword(), new ArrayList<>()));
     }
 
     @Override
@@ -72,10 +70,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Object userLoginServiceObject = SpringApplicationContext.getBean("userLoginServiceImplementation");
-        UserLoginService userService = (UserLoginService) userLoginServiceObject;
-        UserDto userDto = userService.getUserByPublicId(userName);
-        String userId = userDto.getPublicUserId();
+        LoginService loginService =(LoginService) SpringApplicationContext.getBean("loginServiceImplementation");
+        UserDetails userDetails = loginService.getUserByPublicId(userName);
+        String userId = userDetails.getUsername();
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         response.addHeader("UserId", userId);
     }

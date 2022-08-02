@@ -1,6 +1,9 @@
 package com.baanBaini.BaanBaini.admin.model.dto;
 
+import com.baanBaini.BaanBaini.configuration.security.Authority;
+
 import java.util.Date;
+import java.util.List;
 
 public class AdminDTO {
     private String publicAdminId;
@@ -9,6 +12,8 @@ public class AdminDTO {
     private Date joiningDate;
 
     private String password;
+
+    private List<Authority> authorities;
 
     public String getPublicAdminId() {
         return publicAdminId;
@@ -48,5 +53,13 @@ public class AdminDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

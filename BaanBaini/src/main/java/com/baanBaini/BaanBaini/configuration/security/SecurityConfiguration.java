@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                 .antMatchers("/**/signup").permitAll()
                 .antMatchers(ControllerPaths.HOME_BASE_PATH+"/**").permitAll()
                 .antMatchers(ControllerPaths.USER_BASE_URL+"/**").hasAuthority("ROLE_User")
+                .antMatchers(ControllerPaths.ADMIN_BASE_URL+"/**").hasAuthority("ROLE_Admin")
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .addFilter(new AuthorizationFilter(authenticationManager))
