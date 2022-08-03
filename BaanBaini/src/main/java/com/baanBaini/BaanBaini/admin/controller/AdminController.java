@@ -27,10 +27,4 @@ public class AdminController {
         adminDTO=adminLoginService.addAdmin(adminDTO);
         return ResponseEntity.ok(mapperUtility.mapModel(adminDTO,AdminSignupResponseModel.class));
     }
-
-    @GetMapping("testAccess")
-    public  String test(){
-        return "I am accessible";
-    }
-
 }
