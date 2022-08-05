@@ -9,4 +9,5 @@ public class ControllerPaths {
 
     public static final String ADMIN_BASE_URL = "/admin";
 
+    public static final String KURTIS_BASE_PATH = "/kurtis";
 }

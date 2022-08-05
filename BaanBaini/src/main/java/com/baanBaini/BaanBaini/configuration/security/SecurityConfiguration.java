@@ -5,6 +5,7 @@ import com.baanBaini.BaanBaini.shared.urls.ControllerPaths;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,6 +37,8 @@ public class SecurityConfiguration {
                 .antMatchers("/**/login").permitAll()
                 .antMatchers("/**/signup").permitAll()
                 .antMatchers(ControllerPaths.HOME_BASE_PATH+"/**").permitAll()
+                .antMatchers(HttpMethod.GET,ControllerPaths.KURTIS_BASE_PATH+"/**").permitAll()
+                .antMatchers(ControllerPaths.KURTIS_BASE_PATH+"/**").hasAuthority("ROLE_Admin")
                 .antMatchers(ControllerPaths.USER_BASE_URL+"/**").hasAuthority("ROLE_User")
                 .antMatchers(ControllerPaths.ADMIN_BASE_URL+"/**").hasAuthority("ROLE_Admin")
                 .anyRequest().authenticated().and()
