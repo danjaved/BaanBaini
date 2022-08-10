@@ -14,7 +14,7 @@ public class KurtisAdditionResponseModel {
     private int price;
     private String description;
     private List<KurtiLength>  length;
-    private List<String> imgUrls;
+    private List <byte[]> images;
     private List<KurtiAvailability> availabilities;
     private String color;
     private String fit;
@@ -68,12 +68,12 @@ public class KurtisAdditionResponseModel {
         this.length = length;
     }
 
-    public List<String> getImgUrls() {
-        return imgUrls;
+    public List<byte[]> getImages() {
+        return images;
     }
 
-    public void setImgUrls(List<String> imgUrls) {
-        this.imgUrls = imgUrls;
+    public void setImages(List<byte[]> images) {
+        this.images = images;
     }
 
     public List<KurtiAvailability> getAvailabilities() {

@@ -3,6 +3,7 @@ package com.baanBaini.BaanBaini.kurtis.models.dto;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,7 +14,8 @@ public class KurtisDto {
     private int price;
     private String description;
     private List<KurtiLength>  length;
-    private List<String> imgUrls;
+    private List<MultipartFile> multipartImages;
+    private List<byte[]> images;
     private List<KurtiAvailability> availabilities;
     private String color;
     private String fit;
@@ -69,12 +71,20 @@ public class KurtisDto {
         this.length = length;
     }
 
-    public List<String> getImgUrls() {
-        return imgUrls;
+    public List<MultipartFile> getMultipartImages() {
+        return multipartImages;
     }
 
-    public void setImgUrls(List<String> imgUrls) {
-        this.imgUrls = imgUrls;
+    public void setMultipartImages(List<MultipartFile> multipartImages) {
+        this.multipartImages = multipartImages;
+    }
+
+    public List<byte[]> getImages() {
+        return images;
+    }
+
+    public void setImages(List<byte[]> images) {
+        this.images = images;
     }
 
     public List<KurtiAvailability> getAvailabilities() {

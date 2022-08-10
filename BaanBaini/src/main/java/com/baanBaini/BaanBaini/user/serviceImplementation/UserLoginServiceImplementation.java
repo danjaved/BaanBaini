@@ -25,7 +25,7 @@ public class UserLoginServiceImplementation implements UserLoginService {
 
     @Override
     public UserDto addUser(UserDto user) {
-        user.setPublicUserId(utility.getRandomString(12));
+        user.setPublicUserId(utility.getRandomString("USR",12));
         UserEntity userEntity = mapperUtility.mapModel(user, UserEntity.class);
         userEntity.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setAccountEnabled(true);

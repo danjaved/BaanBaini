@@ -30,7 +30,7 @@ public class AdminLoginServiceImplementation implements AdminLoginService {
     public AdminDTO addAdmin(AdminDTO adminDTO) {
         AdminEntity adminEntity = mapperUtility.mapModel(adminDTO, AdminEntity.class);
         adminEntity.setPassword(bCryptPasswordEncoder.encode(adminDTO.getPassword()));
-        adminEntity.setPublicAdminId(utility.getRandomString(12));
+        adminEntity.setPublicAdminId(utility.getRandomString("ADM",12));
         adminEntity.setAccountEnabled(true);
         ArrayList<String> auths = new ArrayList<>();
         auths.add("ROLE_Admin");

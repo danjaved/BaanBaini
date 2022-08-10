@@ -5,6 +5,7 @@ import com.baanBaini.BaanBaini.kurtis.models.entity.KurtiEntity;
 import com.baanBaini.BaanBaini.kurtis.repository.KurtisRepository;
 import com.baanBaini.BaanBaini.kurtis.services.KurtisService;
 import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
+import com.baanBaini.BaanBaini.shared.utility.S3Helper;
 import com.baanBaini.BaanBaini.shared.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,8 +26,9 @@ public class KurtisServiceImplementation implements KurtisService {
 
     @Override
     public KurtisDto addKurti(KurtisDto kurti) {
+        kurti.setPublicId(utility.getRandomString("KUR",9));
+        S3Helper.saveImages(kurti.getPublicId(),kurti.getMultipartImages());
         KurtiEntity kurtiEntity = mapper.mapModel(kurti, KurtiEntity.class);
-        kurtiEntity.setPublicId(utility.getRandomString(9));
         kurtiEntity = kurtisRepository.save(kurtiEntity);
         return mapper.mapModel(kurtiEntity, KurtisDto.class);
     }
@@ -34,6 +36,10 @@ public class KurtisServiceImplementation implements KurtisService {
     @Override
     public List<KurtisDto> getKurtis() {
         List<KurtiEntity> kurtiEntities = kurtisRepository.findAll();
-        return mapper.mapList(kurtiEntities, KurtisDto.class);
+        List<KurtisDto> kurtisDtos =mapper.mapList(kurtiEntities, KurtisDto.class);
+        for (KurtisDto kurti:kurtisDtos) {
+            kurti.setImages(S3Helper.getKurtiImages(kurti.getPublicId()));
+        }
+        return kurtisDtos;
     }
 }

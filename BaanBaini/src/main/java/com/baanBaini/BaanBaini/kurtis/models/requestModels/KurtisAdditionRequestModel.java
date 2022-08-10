@@ -3,12 +3,9 @@ package com.baanBaini.BaanBaini.kurtis.models.requestModels;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiSize;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class KurtisAdditionRequestModel {
     private String name;
@@ -16,13 +13,12 @@ public class KurtisAdditionRequestModel {
     private int price;
     private String description;
     private KurtiLength[] length;
-    private List<String> imgUrls;
     private List<KurtiAvailability> availabilities;
     private String color;
     private String fit;
     private String pattern;
 
-    private MultipartFile[] images;
+    private MultipartFile[] multipartImages;
 
     public String getName() {
         return name;
@@ -64,14 +60,6 @@ public class KurtisAdditionRequestModel {
         this.length = length;
     }
 
-    public List<String> getImgUrls() {
-        return imgUrls;
-    }
-
-    public void setImgUrls(List<String> imgUrls) {
-        this.imgUrls = imgUrls;
-    }
-
     public List<KurtiAvailability> getAvailabilities() {
         return availabilities;
     }
@@ -104,11 +92,11 @@ public class KurtisAdditionRequestModel {
         this.pattern = pattern;
     }
 
-    public MultipartFile[] getImages() {
-        return images;
+    public MultipartFile[] getMultipartImages() {
+        return multipartImages;
     }
 
-    public void setImages(MultipartFile[] images) {
-        this.images = images;
+    public void setMultipartImages(MultipartFile[] multipartImages) {
+        this.multipartImages = multipartImages;
     }
 }
