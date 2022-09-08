@@ -5,7 +5,7 @@ public class AdminSignupResponseModel {
     private String name;
     private String email;
     private String joiningDate;
-
+    private String phoneNumber;
     public String getPublicAdminId() {
         return publicAdminId;
     }
@@ -36,5 +36,13 @@ public class AdminSignupResponseModel {
 
     public void setJoiningDate(String joiningDate) {
         this.joiningDate = joiningDate;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

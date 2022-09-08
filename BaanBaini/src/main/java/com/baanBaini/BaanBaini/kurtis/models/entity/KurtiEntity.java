@@ -1,9 +1,6 @@
 package com.baanBaini.BaanBaini.kurtis.models.entity;
 
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiSize;
+import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -20,7 +17,7 @@ public class KurtiEntity {
     private List<KurtiAvailability> availabilities;
     private List<String> imgUrls;
     private String color;
-    private String fit;
+    private KurtiFit fit;
     private String pattern;
     private boolean isDeleted;
 
@@ -96,11 +93,11 @@ public class KurtiEntity {
         this.color = color;
     }
 
-    public String getFit() {
+    public KurtiFit getFit() {
         return fit;
     }
 
-    public void setFit(String fit) {
+    public void setFit(KurtiFit fit) {
         this.fit = fit;
     }
 

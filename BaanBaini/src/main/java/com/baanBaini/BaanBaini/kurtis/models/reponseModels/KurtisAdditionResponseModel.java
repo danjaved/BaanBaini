@@ -1,9 +1,6 @@
 package com.baanBaini.BaanBaini.kurtis.models.reponseModels;
 
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
-import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiSize;
+import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ public class KurtisAdditionResponseModel {
     private List <byte[]> images;
     private List<KurtiAvailability> availabilities;
     private String color;
-    private String fit;
+    private KurtiFit fit;
     private String pattern;
 
     public String getPublicId() {
@@ -92,11 +89,11 @@ public class KurtisAdditionResponseModel {
         this.color = color;
     }
 
-    public String getFit() {
+    public KurtiFit getFit() {
         return fit;
     }
 
-    public void setFit(String fit) {
+    public void setFit(KurtiFit fit) {
         this.fit = fit;
     }
 

@@ -1,6 +1,7 @@
 package com.baanBaini.BaanBaini.kurtis.models.requestModels;
 
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
+import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiFit;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +16,7 @@ public class KurtisAdditionRequestModel {
     private KurtiLength[] length;
     private List<KurtiAvailability> availabilities;
     private String color;
-    private String fit;
+    private KurtiFit fit;
     private String pattern;
 
     private MultipartFile[] multipartImages;
@@ -76,11 +77,11 @@ public class KurtisAdditionRequestModel {
         this.color = color;
     }
 
-    public String getFit() {
+    public KurtiFit getFit() {
         return fit;
     }
 
-    public void setFit(String fit) {
+    public void setFit(KurtiFit fit) {
         this.fit = fit;
     }
 

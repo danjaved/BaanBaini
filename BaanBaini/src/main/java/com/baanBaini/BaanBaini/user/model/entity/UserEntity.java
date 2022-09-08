@@ -22,6 +22,7 @@ public class UserEntity implements UserDetails {
     private String email;
     private Date joiningDate;
     private String publicUserId;
+    private String phoneNumber;
 
     @Override
     public Collection<Authority> getAuthorities() {
@@ -131,5 +132,13 @@ public class UserEntity implements UserDetails {
 
     public void setPublicUserId(String publicUserId) {
         this.publicUserId = publicUserId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

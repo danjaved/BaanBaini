@@ -14,7 +14,7 @@ public class AdminDTO {
     private String password;
 
     private List<Authority> authorities;
-
+    private String phoneNumber;
     public String getPublicAdminId() {
         return publicAdminId;
     }
@@ -61,5 +61,13 @@ public class AdminDTO {
 
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

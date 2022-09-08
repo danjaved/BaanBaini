@@ -1,6 +1,7 @@
 package com.baanBaini.BaanBaini.kurtis.models.dto;
 
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
+import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiFit;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,7 @@ public class KurtisDto {
     private List<byte[]> images;
     private List<KurtiAvailability> availabilities;
     private String color;
-    private String fit;
+    private KurtiFit fit;
     private String pattern;
 
     private  boolean isDeleted;
@@ -103,11 +104,11 @@ public class KurtisDto {
         this.color = color;
     }
 
-    public String getFit() {
+    public KurtiFit getFit() {
         return fit;
     }
 
-    public void setFit(String fit) {
+    public void setFit(KurtiFit fit) {
         this.fit = fit;
     }
 

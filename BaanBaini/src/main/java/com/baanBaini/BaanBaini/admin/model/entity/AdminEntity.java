@@ -21,7 +21,7 @@ public class AdminEntity implements UserDetails {
     private String email;
     private Date joiningDate;
     private String publicAdminId;
-
+    private String phoneNumber;
     @Override
     public Collection<Authority> getAuthorities() {
         List<Authority> authorityList = new ArrayList<>();
@@ -130,5 +130,13 @@ public class AdminEntity implements UserDetails {
 
     public void setPublicAdminId(String publicAdminId) {
         this.publicAdminId = publicAdminId;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

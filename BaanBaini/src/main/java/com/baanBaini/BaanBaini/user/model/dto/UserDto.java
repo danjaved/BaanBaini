@@ -17,10 +17,7 @@ public class UserDto {
     private String name;
     private String email;
     private Date joiningDate;
-
-    UserDto(){
-
-    }
+    private String phoneNumber;
 
     public String getPublicUserId() {
         return publicUserId;
@@ -108,5 +105,13 @@ public class UserDto {
 
     public void setJoiningDate(Date joiningDate) {
         this.joiningDate = joiningDate;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }
