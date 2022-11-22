@@ -4,6 +4,7 @@ import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiAvailability;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiFit;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiLength;
 import com.baanBaini.BaanBaini.kurtis.kurtiFeatures.KurtiMaterial;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
