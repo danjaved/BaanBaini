@@ -2,6 +2,7 @@ package com.baanBaini.BaanBaini.configuration.security;
 
 
 import com.baanBaini.BaanBaini.SpringApplicationContext;
+import com.baanBaini.BaanBaini.configuration.security.service.ActiveTokenService;
 import com.baanBaini.BaanBaini.configuration.security.service.LoginService;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
 import com.baanBaini.BaanBaini.user.model.requestModel.UserLogInRequestModel;
@@ -72,8 +73,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             e.printStackTrace();
         }
         LoginService loginService =(LoginService) SpringApplicationContext.getBean("loginServiceImplementation");
+        ActiveTokenService activeTokenService = (ActiveTokenService)SpringApplicationContext.getBean("activeTokenServiceImplementation");
+
         UserDetails userDetails = loginService.getUserByPublicId(userName);
         String userId = userDetails.getUsername();
+        activeTokenService.addToken(userId,token);
         response.addHeader("Access-Control-Expose-Headers",SecurityConstants.HEADER_STRING);
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
         response.addHeader("UserId", userId);

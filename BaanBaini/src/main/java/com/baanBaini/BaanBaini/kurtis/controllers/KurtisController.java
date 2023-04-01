@@ -42,5 +42,9 @@ public class KurtisController {
         List<Bucket> buckets = s3.listBuckets();
         return buckets.stream().map(bucket -> bucket.getName()).collect(Collectors.toList());
     }
+    @GetMapping("testAccess")
+    public String testAccess(){
+       return "Success";
+    }
 
 }

@@ -1,11 +1,11 @@
 package com.baanBaini.BaanBaini.configuration.security.service;
 
-import com.baanBaini.BaanBaini.SpringApplicationContext;
 import com.baanBaini.BaanBaini.admin.model.dto.AdminDTO;
 import com.baanBaini.BaanBaini.admin.service.AdminLoginService;
+import com.baanBaini.BaanBaini.configuration.security.model.ActiveTokensEntity;
+import com.baanBaini.BaanBaini.configuration.security.repository.ActiveTokensRepository;
 import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
-import com.baanBaini.BaanBaini.user.model.entity.UserEntity;
 import com.baanBaini.BaanBaini.user.repository.UserRepository;
 import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class LoginServiceImplementation implements LoginService{
@@ -24,6 +22,8 @@ public class LoginServiceImplementation implements LoginService{
     @Autowired
     UserLoginService userLoginService;
 
+    @Autowired
+    ActiveTokensRepository activeSessionsRepository;
     @Autowired
     AdminLoginService adminLoginService;
     @Autowired

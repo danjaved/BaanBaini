@@ -2,7 +2,6 @@ package com.baanBaini.BaanBaini.configuration.security;
 
 import com.baanBaini.BaanBaini.configuration.security.service.LoginService;
 import com.baanBaini.BaanBaini.shared.urls.ControllerPaths;
-import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -40,6 +39,7 @@ public class SecurityConfiguration {
 
         http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/signup").permitAll()
+                .requestMatchers(ControllerPaths.LOGOUT).permitAll()
                 .requestMatchers(ControllerPaths.HOME_BASE_PATH+"/*").permitAll()
                 .requestMatchers(HttpMethod.GET,ControllerPaths.KURTIS_BASE_PATH+"/*").permitAll()
                 .requestMatchers(ControllerPaths.KURTIS_BASE_PATH+"/*").hasAuthority("ROLE_Admin")
@@ -48,7 +48,8 @@ public class SecurityConfiguration {
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .addFilter(new AuthorizationFilter(authenticationManager))
-                .authenticationManager(authenticationManager).cors().configurationSource(corsConfigurationSource()).and()
+                .authenticationManager(authenticationManager).cors().configurationSource(corsConfigurationSource())
+                .and().logout().addLogoutHandler(new AppLogoutHandler()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();

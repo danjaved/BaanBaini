@@ -1,9 +1,9 @@
 package com.baanBaini.BaanBaini.configuration.security;
 
 import com.baanBaini.BaanBaini.SpringApplicationContext;
+import com.baanBaini.BaanBaini.configuration.security.model.ActiveTokensEntity;
+import com.baanBaini.BaanBaini.configuration.security.service.ActiveTokenService;
 import com.baanBaini.BaanBaini.configuration.security.service.LoginService;
-import com.baanBaini.BaanBaini.user.model.dto.UserDto;
-import com.baanBaini.BaanBaini.user.service.UserLoginService;
 import io.jsonwebtoken.Jwts;
 
 import jakarta.servlet.FilterChain;
@@ -41,6 +41,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
 
         LoginService loginService = (LoginService)SpringApplicationContext.getBean("loginServiceImplementation");
+        ActiveTokenService activeTokenService = (ActiveTokenService)SpringApplicationContext.getBean("activeTokenServiceImplementation");
 
         String token = request.getHeader(SecurityConstants.HEADER_STRING);
 
@@ -49,8 +50,8 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                 token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
                 String publicUserId=Jwts.parserBuilder().setSigningKey(SecurityConstants.getTokenSecret()).build().parseClaimsJws(token).getBody()
                         .getSubject();
-                UserDetails userDetails= loginService.getUserByPublicId(publicUserId);
-                if (publicUserId != null && userDetails!=null) {
+                if(activeTokenService.validateToken(publicUserId,token)){
+                    UserDetails userDetails= loginService.getUserByPublicId(publicUserId);
                     return new UsernamePasswordAuthenticationToken(publicUserId, userDetails.getPassword(), userDetails.getAuthorities());
                 }
             }
