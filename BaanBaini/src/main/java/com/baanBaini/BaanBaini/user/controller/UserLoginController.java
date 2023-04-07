@@ -34,4 +34,8 @@ public class UserLoginController {
         UserSignUpResponseModel userSignUpResponseModel=mapperUtility.mapModel(userDto,UserSignUpResponseModel.class);
         return ResponseEntity.ok(userSignUpResponseModel);
     }
+    @GetMapping("testAccess")
+    public String testAccess(){
+        return "USER Data Visible";
+    }
 }

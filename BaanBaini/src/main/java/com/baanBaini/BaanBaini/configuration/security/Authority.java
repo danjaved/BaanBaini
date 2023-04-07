@@ -4,6 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class Authority implements GrantedAuthority {
     private String authority;
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_USER = "USER";
     Authority(){
     }
     public Authority(String authority){

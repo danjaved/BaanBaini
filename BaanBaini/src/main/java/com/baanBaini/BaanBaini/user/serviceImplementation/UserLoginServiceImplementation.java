@@ -1,5 +1,6 @@
 package com.baanBaini.BaanBaini.user.serviceImplementation;
 
+import com.baanBaini.BaanBaini.configuration.security.Authority;
 import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
 import com.baanBaini.BaanBaini.shared.utility.Utility;
 import com.baanBaini.BaanBaini.user.model.dto.UserDto;
@@ -30,7 +31,7 @@ public class UserLoginServiceImplementation implements UserLoginService {
         userEntity.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userEntity.setAccountEnabled(true);
         ArrayList<String> auths = new ArrayList<>();
-        auths.add("ROLE_User");
+        auths.add(Authority.ROLE_USER);
         userEntity.setAuthorities(auths);
         userEntity = this.userRepository.save(userEntity);
         user = mapperUtility.mapModel(userEntity, UserDto.class);

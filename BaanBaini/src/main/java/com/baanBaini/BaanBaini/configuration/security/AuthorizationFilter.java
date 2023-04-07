@@ -57,7 +57,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         }catch (Exception e){
 
         }
-        return new UsernamePasswordAuthenticationToken("","",new ArrayList<>());
+        return null;
     }
 }
 

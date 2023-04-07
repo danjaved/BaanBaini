@@ -4,6 +4,7 @@ import com.baanBaini.BaanBaini.admin.model.dto.AdminDTO;
 import com.baanBaini.BaanBaini.admin.model.entity.AdminEntity;
 import com.baanBaini.BaanBaini.admin.repository.AdminRepository;
 import com.baanBaini.BaanBaini.admin.service.AdminLoginService;
+import com.baanBaini.BaanBaini.configuration.security.Authority;
 import com.baanBaini.BaanBaini.shared.utility.MapperUtility;
 import com.baanBaini.BaanBaini.shared.utility.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class AdminLoginServiceImplementation implements AdminLoginService {
         adminEntity.setPublicAdminId(utility.getRandomString("ADM",12));
         adminEntity.setAccountEnabled(true);
         ArrayList<String> auths = new ArrayList<>();
-        auths.add("ROLE_Admin");
+        auths.add(Authority.ROLE_ADMIN);
         adminEntity.setAuthorities(auths);
         adminEntity = adminRepository.save(adminEntity);
         return mapperUtility.mapModel(adminEntity, AdminDTO.class);

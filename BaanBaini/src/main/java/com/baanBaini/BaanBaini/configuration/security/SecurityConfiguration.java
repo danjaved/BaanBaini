@@ -39,16 +39,15 @@ public class SecurityConfiguration {
         AuthenticationManager authenticationManager=authenticationManagerBuilder.build();
 
         http.csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/signup").permitAll()
-                .requestMatchers(ControllerPaths.HOME_BASE_PATH+"/*").permitAll()
-                .requestMatchers(HttpMethod.GET,ControllerPaths.KURTIS_BASE_PATH+"/*").permitAll()
-                .requestMatchers(ControllerPaths.KURTIS_BASE_PATH+"/*").hasAuthority("ROLE_Admin")
-                .requestMatchers(ControllerPaths.USER_BASE_URL+"/*").hasAuthority("ROLE_User")
-                .requestMatchers(ControllerPaths.ADMIN_BASE_URL+"/*").hasAuthority("ROLE_Admin")
+                .requestMatchers(ControllerPaths.ADMIN_BASE_URL+"/signup").permitAll()
+                .requestMatchers(ControllerPaths.USER_BASE_URL+"/signup").permitAll()
+                .requestMatchers(ControllerPaths.ADMIN_BASE_URL+"/*").hasAuthority(Authority.ROLE_ADMIN)
+                .requestMatchers(ControllerPaths.USER_BASE_URL+"/*").hasAuthority(Authority.ROLE_USER)
                 .anyRequest().authenticated().and()
                 .addFilter(getAuthenticationFilter(authenticationManager))
                 .addFilter(new AuthorizationFilter(authenticationManager))
-                .authenticationManager(authenticationManager).cors().configurationSource(corsConfigurationSource()).and()
+                .authenticationManager(authenticationManager)
+                .cors().configurationSource(corsConfigurationSource()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
